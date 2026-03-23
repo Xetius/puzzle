@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/game_screen.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'services/storage_service.dart';
+import 'screens/title_screen.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // Lock to portrait mode and enable full-screen immersive mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  runApp(const PuzzleApp());
+  final storageService = StorageService();
+
+  runApp(PuzzleApp(storageService: storageService));
 }
 
 class PuzzleApp extends StatelessWidget {
-  const PuzzleApp({super.key});
+  final StorageService storageService;
+
+  const PuzzleApp({super.key, required this.storageService});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class PuzzleApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const GameScreen(),
+      home: TitleScreen(storageService: storageService),
     );
   }
 }

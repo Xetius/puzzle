@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:puzzle/main.dart';
+import 'package:puzzle/services/storage_service.dart';
 
 void main() {
-  testWidgets('App renders game screen', (WidgetTester tester) async {
-    await tester.pumpWidget(const PuzzleApp());
+  testWidgets('App renders title screen', (WidgetTester tester) async {
+    await tester.pumpWidget(PuzzleApp(storageService: StorageService()));
+    await tester.pump();
     expect(find.text('Puzzle'), findsOneWidget);
-    expect(find.text('Start Game'), findsOneWidget);
+    expect(find.text('Play'), findsOneWidget);
   });
 }

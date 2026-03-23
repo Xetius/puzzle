@@ -30,14 +30,15 @@ fi
 # Launch emulator if not already running
 if ! adb devices 2>/dev/null | grep -q "emulator"; then
   echo "Starting emulator..."
-  emulator -avd "$AVD_NAME" &
+  emulator -avd "$AVD_NAME" > /dev/null 2>&1 &
   echo "Waiting for emulator to boot..."
   adb wait-for-device
-  adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+  adb shell 'while [ "$(getprop sys.boot_completed)" != "1" ]; do sleep 1; done'
   echo "Emulator ready."
 else
   echo "Emulator already running."
 fi
 
 echo "Running Flutter app..."
+flutter pub get
 flutter run
